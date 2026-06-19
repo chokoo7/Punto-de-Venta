@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="../Backend/inventario.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 class="heading">Inventario</h1>
+
+        <div class="top-section">
+            <input type="text" class="search" placeholder="Buscar producto..." />
+
+            <button class="add-btn">+ Agregar Producto</button>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Total Productos</h3>
+                <span>150</span>
+            </div>
+
+            <div class="card">
+                <h3>Stock Bajo</h3>
+                <span>12</span>
+            </div>
+
+            <div class="card">
+                <h3>Categorías</h3>
+                <span>8</span>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Categoría</th>
+                        <th>Stock</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td>Producto Ejemplo</td>
+                        <td>Electrónica</td>
+                        <td>50</td>
+                        <td>$500</td>
+                        <td class="acciones">
+                            <button class="btn editar">Editar</button>
+                            <button class="btn actualizar">Actualizar</button>
+                            <button class="btn eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>002</td>
+                        <td>Producto Ejemplo</td>
+                        <td>Hogar</td>
+                        <td>25</td>
+                        <td>$350</td>
+                        <td class="acciones">
+                            <button class="btn editar">Editar</button>
+                            <button class="btn actualizar">Actualizar</button>
+                            <button class="btn eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>003</td>
+                        <td>Producto Ejemplo</td>
+                        <td>Oficina</td>
+                        <td>10</td>
+                        <td>$120</td>
+                        <td class="acciones">
+                            <button class="btn editar">Editar</button>
+                            <button class="btn actualizar">Actualizar</button>
+                            <button class="btn eliminar">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
