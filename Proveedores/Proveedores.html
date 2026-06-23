@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proveedores Disponibles</title>
+    <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
 
@@ -14,19 +15,15 @@
         
         <label for="nombre">Nombre del Proveedor:</label>
         <input type="text" id="nombre" required>
-        <br><br>
 
         <label for="productos">Productos a Ofrecer:</label>
         <input type="text" id="productos" required>
-        <br><br>
 
         <label for="cantidad">Cantidad del Producto Disponible:</label>
         <input type="number" id="cantidad" step="1" required>
-        <br><br>
 
         <label for="total">Total a Pagar:</label>
         <input type="number" id="total" step="1" required>
-        <br><br>
 
         <button type="submit">Insertar Proveedor</button>
     </form>
@@ -34,19 +31,22 @@
     <hr>
 
     <h3>Lista de Proveedores</h3>
-    <table border="1" id="tabla-proveedores">
-        <thead>
-            <tr>
-                <th>ID Proveedor</th>
-                <th>Nombre</th>
-                <th>Productos a Ofrecer</th>
-                <th>Cantidad Disponible</th>
-                <th>Total a Pagar</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="cuerpo-tabla"></tbody>
-    </table>
+    
+    <div class="table-container">
+        <table id="tabla-proveedores">
+            <thead>
+                <tr>
+                    <th>ID Proveedor</th>
+                    <th>Nombre</th>
+                    <th>Productos a Ofrecer</th>
+                    <th>Cantidad Disponible</th>
+                    <th>Total a Pagar</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpo-tabla"></tbody>
+        </table>
+    </div>
 
     <script src="Proveedores.js"></script>
 </body>
