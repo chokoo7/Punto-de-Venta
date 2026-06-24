@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>La Esquinita - Dashboard</title>
+    <link rel="stylesheet" href="styles/Dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="dashboard">
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Usuario -->
+            <div class="user-info">
+                <img src="img/user.png" alt="Usuario" class="user-avatar">
+                <div class="user-details">
+                    <h4 id="nombreUsuario">Usuario</h4>
+                    <p id="rolUsuario">(Rol)</p>
+                </div>
+            </div>
+
+            <!-- Menú -->
+            <nav class="menu">
+                <a href="Inventario.html"><i class="fas fa-box"></i> Inventario</a>
+                <a href="Proveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
+                <a href="Ventas.html"><i class="fas fa-cash-register"></i> Ventas</a>
+                <a href="Reportes.html"><i class="fas fa-chart-line"></i> Reportes</a>
+                <a href="#"><i class="fas fa-sync"></i> Movimientos</a>
+            </nav>
+
+            <!-- Logout -->
+            <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
+        </aside>
+
+        <!-- Main -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar producto o código...">
+                    <button><i class="fas fa-barcode"></i></button>
+                </div>
+            </header>
+
+            <!-- KPIs -->
+            <section class="metrics">
+                <div class="card kpi azul">
+                    <h3>Valor inventario</h3><span id="valorInventario">$0</span>
+                </div>
+                <div class="card kpi verde">
+                    <h3>Productos en stock</h3><span id="totalProductos">0</span>
+                </div>
+                <div class="card kpi rojo">
+                    <h3>Bajo stock</h3><span id="bajoStock">0</span>
+                </div>
+            </section>
+
+            <!-- Sección de ventas -->
+            <section class="ventas-section">
+                <div class="ventas-grafica">
+                    <h3>Productos más vendidos</h3>
+                    <canvas id="productosVendidos"></canvas>
+                </div>
+                <div class="ventas-lista">
+                    <h3>Últimas ventas <a href="Ventas.html" class="ver-todas">Ver todas</a></h3>
+                    <ul id="listaVentas"></ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        async function cargarUsuario() {
+            const res = await fetch("http://localhost:4000/api/auth/usuario", { credentials: "include" });
+            if (res.ok) {
+                const usuario = await res.json();
+                document.getElementById("nombreUsuario").textContent = usuario.nombreUsuario;
+                document.getElementById("rolUsuario").textContent = `(${usuario.rol})`;
+            }
+        }
+
+        async function cargarVentas() {
+            // 📊 Productos más vendidos
+            const res = await fetch("http://localhost:4000/api/ventas/productos-mas-vendidos", { credentials: "include" });
+            const data = await res.json();
+
+            const ctx = document.getElementById("productosVendidos").getContext("2d");
+            new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: data.map(p => p.nombre),
+                    datasets: [{
+                        label: "Cantidad vendida",
+                        data: data.map(p => p.cantidad),
+                        backgroundColor: "#1089d3"
+                    }]
+                }
+            });
+
+            // 🧾 Últimas ventas
+            const res2 = await fetch("http://localhost:4000/api/ventas/ultimas", { credentials: "include" });
+            const ultimas = await res2.json();
+            const lista = document.getElementById("listaVentas");
+            lista.innerHTML = "";
+            ultimas.forEach(v => {
+                const li = document.createElement("li");
+                li.textContent = `Venta #${v.id} — $${v.monto} — Cliente: ${v.cliente} — ${v.hora}`;
+                lista.appendChild(li);
+            });
+        }
+
+        cargarUsuario();
+        cargarVentas();
+        setInterval(cargarVentas, 30000); // 🔄 refrescar cada 30s
+    </script>
+</body>
+
+</html>

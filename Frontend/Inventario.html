@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario</title>
+    <link rel="stylesheet" href="styles/Inventario.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Botón regresar -->
+        <div class="back-section">
+            <a href="Dashboard.html" class="back-btn">← Volver</a>
+        </div>
+
+        <h1 class="heading">Inventario</h1>
+
+        <!-- Métricas -->
+        <div class="metrics">
+            <div class="card">
+                <h3>Valor del inventario</h3>
+                <span id="valorInventario">$0</span>
+            </div>
+            <div class="card">
+                <h3>Productos en stock</h3>
+                <span id="totalProductos">0</span>
+            </div>
+            <div class="card">
+                <h3>Bajo stock</h3>
+                <span id="bajoStock">0</span>
+            </div>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Buscar producto o código...">
+        </div>
+
+        <!-- Tabla -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Costo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaInventario">
+                    <!-- Se llena dinámicamente con inventario.js -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer con paginación -->
+        <div class="footer-table">
+            <span id="contador">Mostrando 0 de 0</span>
+            <div class="pagination">
+                <button>1</button>
+                <button>2</button>
+                <button>3</button>
+                <button>Siguiente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal/Card para visualizar -->
+    <div id="modalVisualizar" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="cerrarModal()">&times;</span>
+            <h3>Detalles del Producto</h3>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="inventario.js"></script>
+</body>
+
+</html>
