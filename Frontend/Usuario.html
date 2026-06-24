@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="Styles/Usuario.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Crear Nuevo Usuario</h2>
+        <form id="formUsuario">
+            <div class="form-group">
+                <label for="nombreUsuario">Nombre de Usuario</label>
+                <input type="text" id="nombreUsuario" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" required>
+            </div>
+            <div class="form-group">
+                <label for="contraseña">Contraseña</label>
+                <input type="password" id="contraseña" required>
+            </div>
+            <div class="form-group">
+                <label for="rol">Rol</label>
+                <select id="rol" required>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Cajero">Cajero</option>
+                    <option value="Gerente">Gerente</option>
+                </select>
+            </div>
+            <button type="submit">Registrar Usuario</button>
+            <p id="mensajeUsuario"></p>
+        </form>
+
+        <!-- Botón para regresar -->
+        <div class="back-section">
+            <a href="Dashboard.html" class="back-btn">← Regresar al Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("formUsuario").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const nombreUsuario = document.getElementById("nombreUsuario").value;
+            const correo = document.getElementById("correo").value;
+            const contraseña = document.getElementById("contraseña").value;
+            const rol = document.getElementById("rol").value;
+
+            try {
+                const res = await fetch("http://localhost:4000/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nombreUsuario, correo, contraseña, rol }),
+                    credentials: "include"
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    document.getElementById("mensajeUsuario").textContent = "✅ Usuario creado correctamente";
+                    document.getElementById("formUsuario").reset();
+                } else {
+                    document.getElementById("mensajeUsuario").textContent = `❌ Error: ${data.mensaje}`;
+                }
+            } catch (error) {
+                document.getElementById("mensajeUsuario").textContent = "❌ Error de conexión con el servidor";
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -4,17 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title>La Esquinita - Dashboard</title>
-    <link rel="stylesheet" href="styles/Dashboard.css">
+    <link rel="stylesheet" href="Styles/Dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
     <div class="dashboard">
-
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <!-- Usuario -->
             <div class="user-info">
                 <img src="img/user.png" alt="Usuario" class="user-avatar">
                 <div class="user-details">
@@ -23,25 +21,21 @@
                 </div>
             </div>
 
-            <!-- Menú -->
             <nav class="menu">
                 <a href="Inventario.html"><i class="fas fa-box"></i> Inventario</a>
                 <a href="Proveedores.html"><i class="fas fa-truck"></i> Proveedores</a>
                 <a href="Ventas.html"><i class="fas fa-cash-register"></i> Ventas</a>
-                <a href="Reportes.html"><i class="fas fa-chart-line"></i> Reportes</a>
-                <a href="#"><i class="fas fa-sync"></i> Movimientos</a>
+                <a href="EntradaSalidas.html"><i class="fas fa-chart-line"></i> Entradas y Salidas</a>
             </nav>
 
-            <!-- Logout -->
             <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
         </aside>
 
         <!-- Main -->
         <main class="main-content">
             <header class="top-bar">
-                <div class="search-bar">
-                    <input type="text" placeholder="Buscar producto o código...">
-                    <button><i class="fas fa-barcode"></i></button>
+                <div class="welcome-message">
+                    <p>Bienvenido a La Esquinita</p>
                 </div>
             </header>
 
@@ -69,6 +63,12 @@
                     <ul id="listaVentas"></ul>
                 </div>
             </section>
+
+            <!-- 📌 Botón para gestión de usuarios -->
+            <section class="usuarios-section">
+                <h3>Gestión de Usuarios</h3>
+                <a href="Usuario.html" class="btn-usuarios">➕ Crear Nuevo Usuario</a>
+            </section>
         </main>
     </div>
 
@@ -82,8 +82,20 @@
             }
         }
 
+        async function cargarMetricasInventario() {
+            const res = await fetch("http://localhost:4000/api/proveedores/productos/lista", { credentials: "include" });
+            const productos = await res.json();
+
+            const valorTotal = productos.reduce((acc, p) => acc + p.cantidadProductos * p.costeProductos, 0);
+            const totalProductos = productos.length;
+            const bajoStock = productos.filter(p => p.cantidadProductos <= 5).length;
+
+            document.getElementById("valorInventario").textContent = `$${valorTotal.toLocaleString()}`;
+            document.getElementById("totalProductos").textContent = totalProductos;
+            document.getElementById("bajoStock").textContent = bajoStock;
+        }
+
         async function cargarVentas() {
-            // 📊 Productos más vendidos
             const res = await fetch("http://localhost:4000/api/ventas/productos-mas-vendidos", { credentials: "include" });
             const data = await res.json();
 
@@ -100,21 +112,30 @@
                 }
             });
 
-            // 🧾 Últimas ventas
             const res2 = await fetch("http://localhost:4000/api/ventas/ultimas", { credentials: "include" });
             const ultimas = await res2.json();
             const lista = document.getElementById("listaVentas");
             lista.innerHTML = "";
             ultimas.forEach(v => {
                 const li = document.createElement("li");
-                li.textContent = `Venta #${v.id} — $${v.monto} — Cliente: ${v.cliente} — ${v.hora}`;
+                li.textContent = `Productos: ${v.productos.join(", ")} — $${v.totalCompra} — ${new Date(v.fecha).toLocaleString("es-MX")}`;
                 lista.appendChild(li);
             });
         }
 
         cargarUsuario();
         cargarVentas();
-        setInterval(cargarVentas, 30000); // 🔄 refrescar cada 30s
+        cargarMetricasInventario();
+
+        setInterval(() => {
+            cargarVentas();
+            cargarMetricasInventario();
+        }, 30000);
+
+        document.querySelector(".logout-btn").addEventListener("click", async () => {
+            const res = await fetch("http://localhost:4000/api/auth/logout", { method: "POST", credentials: "include" });
+            if (res.ok) window.location.href = "Login.html";
+        });
     </script>
 </body>
 

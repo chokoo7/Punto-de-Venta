@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Entradas y Salidas</title>
+    <link rel="stylesheet" href="Styles/EntradaSalida.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Entradas y Salidas</h2>
+
+        <!-- Botón para regresar -->
+        <div class="back-section">
+            <a href="Dashboard.html" class="back-btn">← Regresar al Dashboard</a>
+        </div>
+
+        <section class="grafica-section">
+            <div class="grafica-box">
+                <h3>Gastos Mensuales</h3>
+                <canvas id="graficaGastos"></canvas>
+            </div>
+            <div class="grafica-box">
+                <h3>Entradas vs Salidas</h3>
+                <canvas id="graficaEntradasSalidas"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <script src="entradaSalidas.js"></script>
+</body>
+
+</html>
